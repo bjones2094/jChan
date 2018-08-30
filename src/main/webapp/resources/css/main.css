@@ -1,0 +1,86 @@
+.header {
+    text-align: center;
+    vertical-align: top;
+    font-size: 42px;
+}
+
+.bannerLink {
+    font-size: 18px;
+    text-decoration: none;
+}
+
+.bannerLink:link, .bannerLink:visited {
+    color: black;
+}
+
+.bannerLink:hover {
+    color: red;
+}
+
+.boardBody {
+    background-color: var(--background-color);
+    color: var(--trim-color);
+}
+
+.replyList {
+    width: 500px;
+}
+
+.threadLink {
+    color: var(--trim-color);
+    font-size: 20px;
+    text-decoration: none;
+}
+
+.threadLink:hover {
+    color: red;
+}
+
+.threadTitle {
+    color: var(--trim-color);
+    font-size: 20px;
+    width: 100%;
+}
+
+.submitForm {
+    position: relative;
+    width: 600px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.submitFormTitle {
+    text-align: center;
+}
+
+.submitError {
+    font-size: 20px;
+    text-align: center;
+    color: red;
+    position: relative;
+    width: 600px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.replyHeader {
+    background-color: var(--main-color);
+    border: solid 1px var(--trim-color);
+    border-bottom: none;
+}
+
+.replyBody {
+    border: solid 1px var(--trim-color);
+    height: 200px;
+}
+
+.replyFooter {
+    text-align: right;
+    background-color: var(--main-color);
+    border: solid 1px var(--trim-color);
+    border-top: none;
+}
+
+hr {
+    border: solid 0.5px var(--trim-color);
+}
