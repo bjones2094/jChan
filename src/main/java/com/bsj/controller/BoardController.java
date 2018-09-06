@@ -1,8 +1,8 @@
 package com.bsj.controller;
 
-import com.bsj.dao.BoardDAO;
-import com.bsj.dao.ReplyDAO;
-import com.bsj.dao.ThreadDAO;
+import com.bsj.service.BoardService;
+import com.bsj.service.ReplyService;
+import com.bsj.service.ThreadService;
 import com.bsj.vo.BoardVO;
 import com.bsj.vo.ReplyVO;
 import com.bsj.vo.ThreadVO;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -23,13 +24,13 @@ import java.util.Map;
 @RequestMapping("/")
 public class BoardController {
     @Autowired
-    private BoardDAO boardDAO;
+    private BoardService boardService;
 
     @Autowired
-    private ThreadDAO threadDAO;
+    private ReplyService replyService;
 
     @Autowired
-    private ReplyDAO replyDAO;
+    private ThreadService threadService;
 
     @GetMapping("/")
     public String root(Model model) {
@@ -40,8 +41,8 @@ public class BoardController {
     @GetMapping("/{boardName}")
     public String board(Model model, @PathVariable String boardName) {
         loadBoardNames(model);
-        BoardVO board = boardDAO.getBoard(boardName);
-        Map<ThreadVO, ReplyVO> threads = threadDAO.getThreadsWithFirstReply(board.getId());
+        BoardVO board = boardService.getBoard(boardName);
+        Map<ThreadVO, ReplyVO> threads = threadService.getThreadsWithFirstReply(board.getId());
 
         model.addAttribute("board", board);
         model.addAttribute("threads", threads);
@@ -54,9 +55,9 @@ public class BoardController {
                               @PathVariable String boardName,
                               @RequestParam("threadName") String threadName,
                               @RequestParam("replyContent") String replyContent,
-                              @RequestParam("boardID") Integer boardID) {
+                              @RequestParam("boardID") Integer boardID) throws SQLException {
         if(StringUtils.isNotBlank(replyContent)) {
-            threadDAO.createThread(boardID, threadName, replyContent);
+            threadService.createThread(boardID, threadName, replyContent);
         }
         else {
             model.addAttribute("submitError", "Thread description cannot be blank.");
@@ -70,9 +71,9 @@ public class BoardController {
                          @PathVariable Integer threadID) {
         loadBoardNames(model);
 
-        BoardVO board = boardDAO.getBoard(boardName);
-        ThreadVO thread = threadDAO.getThread(threadID);
-        List<ReplyVO> replies = replyDAO.getReplies(threadID);
+        BoardVO board = boardService.getBoard(boardName);
+        ThreadVO thread = threadService.getThread(threadID);
+        List<ReplyVO> replies = replyService.getReplies(threadID);
 
         model.addAttribute("board", board);
         model.addAttribute("thread", thread);
@@ -86,12 +87,12 @@ public class BoardController {
                                @PathVariable String boardName,
                                @PathVariable Integer threadID,
                                @RequestParam("replyContent") String replyContent) {
-        replyDAO.createReply(threadID, replyContent);
+        replyService.createReply(threadID, replyContent);
         return thread(model, boardName, threadID);
     }
 
     private void loadBoardNames(Model model) {
-        List<String> boardNames = boardDAO.getBoardNames();
+        List<String> boardNames = boardService.getBoardNames();
         model.addAttribute("boards", boardNames);
     }
 }

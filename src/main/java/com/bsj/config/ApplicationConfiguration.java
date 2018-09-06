@@ -21,6 +21,11 @@ public class ApplicationConfiguration implements WebMvcConfigurer {
     }
 
     @Bean
+    public String uploadedImageDirectory() {
+        return "C:/Users/jisabj5/Desktop/jChan";
+    }
+
+    @Bean
     public DataSource sqliteDataSource() {
         SQLiteDataSource ds = new SQLiteDataSource();
         ds.setUrl("jdbc:sqlite:" + sqliteDatabaseLocation());

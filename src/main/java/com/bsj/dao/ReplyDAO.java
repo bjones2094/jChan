@@ -1,6 +1,7 @@
 package com.bsj.dao;
 
 import com.bsj.vo.ReplyVO;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
 import java.text.DateFormat;
@@ -20,8 +21,13 @@ public class ReplyDAO extends DAOBase {
     }
 
     public ReplyVO getFirstReply(int threadID) {
-        Map<String, Object> result = getSqliteTemplate().queryForMap("SELECT * FROM replies WHERE thread = ? ORDER BY id ASC LIMIT 1", threadID);
-        return buildReplyVO(result);
+        try {
+            Map<String, Object> result = getSqliteTemplate().queryForMap("SELECT * FROM replies WHERE thread = ? ORDER BY id ASC LIMIT 1", threadID);
+            return buildReplyVO(result);
+        }
+        catch(DataAccessException e) {
+            return null;
+        }
     }
 
     public int createReply(int threadID, String content) {
