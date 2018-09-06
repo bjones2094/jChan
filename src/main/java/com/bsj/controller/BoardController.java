@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -55,12 +55,13 @@ public class BoardController {
                               @PathVariable String boardName,
                               @RequestParam("threadName") String threadName,
                               @RequestParam("replyContent") String replyContent,
-                              @RequestParam("boardID") Integer boardID) throws SQLException {
-        if(StringUtils.isNotBlank(replyContent)) {
-            threadService.createThread(boardID, threadName, replyContent);
+                              @RequestParam("boardID") Integer boardID,
+                              @RequestParam(value = "imageUpload", required = false) MultipartFile imageUpload) {
+        if(StringUtils.isNotBlank(replyContent) || imageUpload != null) {
+            threadService.createThread(boardID, threadName, replyContent, imageUpload);
         }
         else {
-            model.addAttribute("submitError", "Thread description cannot be blank.");
+            model.addAttribute("submitError", "You must enter a description or upload an image.");
         }
         return board(model, boardName);
     }
@@ -86,8 +87,15 @@ public class BoardController {
     public String threadSubmit(Model model,
                                @PathVariable String boardName,
                                @PathVariable Integer threadID,
-                               @RequestParam("replyContent") String replyContent) {
-        replyService.createReply(threadID, replyContent);
+                               @RequestParam("replyContent") String replyContent,
+                               @RequestParam("boardID") Integer boardID,
+                               @RequestParam(value = "imageUpload", required = false) MultipartFile imageUpload) {
+        if(StringUtils.isNotBlank(replyContent) || imageUpload != null) {
+            replyService.createReply(threadID, replyContent, boardID, imageUpload);
+        }
+        else {
+            model.addAttribute("submitError", "You must enter a reply or upload an image.");
+        }
         return thread(model, boardName, threadID);
     }
 

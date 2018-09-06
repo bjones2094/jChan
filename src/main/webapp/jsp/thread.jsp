@@ -24,17 +24,22 @@
         <hr /><br />
 
         <div class = "submitForm">
-            <form action = "${contextPath}/${board.name}/thread/${thread.id}/submit/" method = "post" autocomplete="off">
+            <form action = "${contextPath}/${board.name}/thread/${thread.id}/submit/" method = "post" autocomplete="off" enctype = "multipart/form-data">
                 <table style = "width: 100%">
                     <tr class = "submitFormTitle">
-                        <td style = "text-align: center">Post a reply:</td>
+                        <td style = "text-align: center" colspan = "2">
+                            Post a reply:
+                        </td>
                     </tr>
-                    <tr >
-                        <td style = "width: 100%">
+                    <tr>
+                        <td style = "width: 100%" colspan = "2">
                             <textArea rows = "6" name = "replyContent" style = "width: 100%" placeholder = "Reply" maxlength="200"></textArea>
                         </td>
                     </tr>
                     <tr>
+                        <td style = "text-align: left">
+                            <input type = "file" name = "imageUpload" accept = "image/*" value = "Upload a File" />
+                        </td>
                         <td style = "text-align: right">
                             <input type = "submit" value = "Submit" />
                         </td>
@@ -42,6 +47,13 @@
                 </table>
             </form>
         </div>
+
+        <c:if test="${not empty submitError}">
+            <div class = "submitError">
+                ${submitError}
+            </div>
+            <br />
+        </c:if>
 
         <div class = "replyList">
             <div class="threadTitle">

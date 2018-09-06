@@ -4,6 +4,11 @@ import com.bsj.vo.ReplyVO;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -30,15 +35,33 @@ public class ReplyDAO extends DAOBase {
         }
     }
 
-    public int createReply(int threadID, String content) {
+    public int createReply(int threadID, String content) throws SQLException {
         Date now = Calendar.getInstance().getTime();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        return getSqliteTemplate().update(
-                "INSERT INTO replies (content, thread, create_date) VALUES(?,?,?)",
-                content,
-                threadID,
-                dateFormat.format(now)
-        );
+
+        Connection connection = getSqliteTemplate().getDataSource().getConnection();
+        connection.setAutoCommit(false);
+
+        String insertThreadQuery = "INSERT INTO replies (content, thread, create_date) VALUES(?,?,?)";
+        PreparedStatement insertStatement = connection.prepareStatement(insertThreadQuery);
+        insertStatement.setString(1, content);
+        insertStatement.setInt(2, threadID);
+        insertStatement.setString(3, dateFormat.format(now));
+        insertStatement.execute();
+        connection.commit();
+
+        Statement selectStatement = connection.createStatement();
+        ResultSet rs = selectStatement.executeQuery("SELECT last_insert_rowid()");
+        Integer nextReplyID = rs.getInt(1);
+
+        connection.commit();
+        connection.close();
+
+        return nextReplyID;
+    }
+
+    public void associateFileToReply(int replyID, String filePath) {
+        getSqliteTemplate().update("UPDATE replies SET image_path = ? WHERE id = ?", filePath, replyID);
     }
 
     public void deleteReplies(int threadID) {
@@ -51,6 +74,7 @@ public class ReplyDAO extends DAOBase {
         reply.setContent((String) row.get("content"));
         reply.setCreateDate((String) row.get("create_date"));
         reply.setThreadID((Integer) row.get("thread"));
+        reply.setImagePath((String) row.get("image_path"));
         return reply;
     }
 }

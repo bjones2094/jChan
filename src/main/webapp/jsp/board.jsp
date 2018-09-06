@@ -25,22 +25,27 @@
         <hr /><br />
 
         <div class = "submitForm">
-            <form action = "${contextPath}/${board.name}/submit/" method = "post" autocomplete="off">
+            <form action = "${contextPath}/${board.name}/submit/" method = "post" autocomplete="off" enctype="multipart/form-data">
                 <table style = "width: 100%">
                     <tr>
-                        <td class = "submitFormTitle">Create a thread:</td>
+                        <td class = "submitFormTitle" colspan = "2">
+                            Create a thread:
+                        </td>
                     </tr>
                     <tr>
-                        <td style = "width: 100%">
+                        <td style = "width: 100%" colspan = "2">
                             <input type = "text" name = "threadName" style = "width: 100%" placeholder="Title" size="16" />
                         </td>
                     </tr>
                     <tr >
-                        <td style = "width: 100%">
+                        <td style = "width: 100%" colspan = "2">
                             <textArea rows = "6" name = "replyContent" style = "width: 100%" placeholder="Description" maxlength="200"></textArea>
                         </td>
                     </tr>
                     <tr>
+                        <td style = "text-align: left">
+                            <input type = "file" name = "imageUpload" accept = "image/*" value = "Upload a File" />
+                        </td>
                         <td style = "text-align: right">
                             <input type = "submit" value = "Submit" />
                         </td>

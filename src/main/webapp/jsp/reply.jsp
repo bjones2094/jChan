@@ -7,7 +7,20 @@
     </table>
 </div>
 <div class="replyBody">
-    ${reply.content}
+    <table cellspacing="10">
+        <tr valign = "top">
+            <c:if test="${not empty reply.imagePath}">
+                <td>
+                    <a target = "_blank" href = "${contextPath}/images/${board.directory}/${reply.imagePath}">
+                        <img src = "${contextPath}/images/${board.directory}/${reply.imagePath}" style = "width: 125px" />
+                    </a>
+                </td>
+            </c:if>
+            <td>
+                ${reply.content}
+            </td>
+        </tr>
+    </table>
 </div>
 <div class="replyFooter">
     <c:choose>

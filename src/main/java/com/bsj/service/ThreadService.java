@@ -1,11 +1,11 @@
 package com.bsj.service;
 
-import com.bsj.dao.ReplyDAO;
 import com.bsj.dao.ThreadDAO;
 import com.bsj.vo.ReplyVO;
 import com.bsj.vo.ThreadVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.SQLException;
 import java.util.LinkedHashMap;
@@ -17,7 +17,7 @@ public class ThreadService {
     private ThreadDAO threadDAO;
 
     @Autowired
-    private ReplyDAO replyDAO;
+    private ReplyService replyService;
 
     public ThreadVO getThread(int id) {
         return threadDAO.getThread(id);
@@ -26,7 +26,7 @@ public class ThreadService {
     public Map<ThreadVO, ReplyVO> getThreadsWithFirstReply(int boardID) {
         Map<ThreadVO, ReplyVO> threadsWithReplies = new LinkedHashMap();
         for(ThreadVO thread : threadDAO.getThreads(boardID)) {
-            ReplyVO firstReply = replyDAO.getFirstReply(thread.getId());
+            ReplyVO firstReply = replyService.getFirstReply(thread.getId());
             if(firstReply != null) {
                 threadsWithReplies.put(thread, firstReply);
             }
@@ -34,10 +34,10 @@ public class ThreadService {
         return threadsWithReplies;
     }
 
-    public void createThread(int boardID, String threadName, String replyContent) {
+    public void createThread(int boardID, String threadName, String replyContent, MultipartFile imageUpload) {
         try {
             int threadID = threadDAO.createThread(boardID, threadName);
-            replyDAO.createReply(threadID, replyContent);
+            replyService.createReply(threadID, replyContent, boardID, imageUpload);
 
             if(threadDAO.getThreadCount(boardID) > 10) {
                 deleteOldestThread(boardID);
@@ -51,6 +51,6 @@ public class ThreadService {
     public void deleteOldestThread(int boardID) {
         int oldestThreadID = threadDAO.getOldestThreadID(boardID);
         threadDAO.deleteThread(oldestThreadID);
-        replyDAO.deleteReplies(oldestThreadID);
+        replyService.deleteReplies(oldestThreadID);
     }
 }
