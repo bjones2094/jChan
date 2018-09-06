@@ -33,7 +33,7 @@
                     </tr>
                     <tr>
                         <td style = "width: 100%" colspan = "2">
-                            <textArea rows = "6" name = "replyContent" style = "width: 100%" placeholder = "Reply" maxlength="200"></textArea>
+                            <textArea rows = "6" name = "replyContent" style = "width: 100%" placeholder = "Description" maxlength="200"></textArea>
                         </td>
                     </tr>
                     <tr>
@@ -45,6 +45,7 @@
                         </td>
                     </tr>
                 </table>
+                <input type = "hidden" name = "boardID" value = "${board.id}" />
             </form>
         </div>
 
