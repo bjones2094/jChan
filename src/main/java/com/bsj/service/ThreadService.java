@@ -51,6 +51,10 @@ public class ThreadService {
         }
     }
 
+    public void deleteThread(int threadID) {
+        threadDAO.deleteThread(threadID);
+    }
+
     public void deleteOldestThread(int boardID) {
         int oldestThreadID = threadDAO.getOldestThreadID(boardID);
         threadDAO.deleteThread(oldestThreadID);

@@ -23,14 +23,5 @@
     </table>
 </div>
 <div class="replyFooter">
-    <c:choose>
-        <c:when test="${not empty threadLink}">
-            <form action = "${threadLink}" style = "margin-bottom: 3px">
-                <input type = "submit" value = "View Thread" style = "margin-top: 3px; margin-right: 3px"/>
-            </form>
-        </c:when>
-        <c:otherwise>
-            &nbsp;
-        </c:otherwise>
-    </c:choose>
+    &nbsp;
 </div>

@@ -1,7 +1,7 @@
 .header {
     text-align: center;
     vertical-align: top;
-    font-size: 42px;
+    font-size: 50px;
 }
 
 .bannerLink {
@@ -63,6 +63,16 @@
     transform: translateX(-50%);
 }
 
+.displayMessage {
+    font-size: 20px;
+    text-align: center;
+    color: var(--trim-color);
+    position: relative;
+    width: 600px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
 .replyHeader {
     background-color: var(--main-color);
     border: solid 1px var(--trim-color);
@@ -75,7 +85,6 @@
 }
 
 .replyFooter {
-    text-align: right;
     background-color: var(--main-color);
     border: solid 1px var(--trim-color);
     border-top: none;
@@ -83,4 +92,10 @@
 
 hr {
     border: solid 0.5px var(--trim-color);
+}
+
+.deleteThreadButton {
+    margin-top: 3px;
+    margin-left: 3px;
+    margin-bottom: 3px
 }

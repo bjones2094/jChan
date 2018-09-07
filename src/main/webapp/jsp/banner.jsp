@@ -3,12 +3,14 @@
 <c:set var = "contextPath" value="<%=request.getContextPath()%>" />
 
 <div>
-    Boards: &nbsp; /
+    <a class = "bannerLink" href="${contextPath}">home</a>
+    &nbsp; / &nbsp;
+    <a class = "bannerLink" href="${contextPath}/admin">admin</a>
     <c:forEach items = "${boards}" var = "boardName">
-        &nbsp;
+        &nbsp; / &nbsp;
         <a class="bannerLink" href="${contextPath}/${boardName}">
                 ${boardName}
         </a>
-        &nbsp; /
     </c:forEach>
 </div>
+<hr />

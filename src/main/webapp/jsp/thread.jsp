@@ -15,13 +15,13 @@
         <title>jChan</title>
     </head>
     <body class="boardBody">
+        <%@include file="banner.jsp"%>
+        <br />
         <div class="header">
             /${board.name}/ - ${board.description}
         </div>
 
-        <%@include file="banner.jsp"%>
-
-        <hr /><br />
+        <br />
 
         <div class = "submitForm">
             <form action = "${contextPath}/${board.name}/thread/${thread.id}/submit/" method = "post" autocomplete="off" enctype = "multipart/form-data">
@@ -62,7 +62,7 @@
             </div>
 
             <c:forEach items = "${replies}" var = "reply">
-                <%@include file = "reply.jsp" %>
+                <%@include file = "reply/replyThreadView.jsp" %>
                 <br />
             </c:forEach>
         </div>

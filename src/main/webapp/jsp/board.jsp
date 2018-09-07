@@ -16,14 +16,12 @@
     </head>
 
     <body class="boardBody">
+        <%@include file="banner.jsp"%>
+        <br />
         <div class="header">
             /${board.name}/ - ${board.description}
         </div>
-
-        <%@include file="banner.jsp"%>
-
-        <hr /><br />
-
+        <br />
         <div class = "submitForm">
             <form action = "${contextPath}/${board.name}/submit/" method = "post" autocomplete="off" enctype="multipart/form-data">
                 <table style = "width: 100%">
@@ -60,6 +58,11 @@
                 ${submitError}
             </div>
         </c:if>
+        <c:if test="${not empty displayMessage}">
+            <div class = "displayMessage">
+                    ${displayMessage}
+            </div>
+        </c:if>
 
         <br />
 
@@ -73,7 +76,7 @@
                 <br />
 
                 <c:set var = "reply" value = "${thread.value}" />
-                <%@include file = "reply.jsp"%>
+                <%@include file = "reply/replyBoardView.jsp"%>
 
                 <br />
             </c:forEach>
