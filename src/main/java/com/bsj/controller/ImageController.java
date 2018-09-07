@@ -1,5 +1,6 @@
 package com.bsj.controller;
 
+import com.bsj.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -11,23 +12,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 @Controller()
 @RequestMapping("/images")
 public class ImageController {
     @Autowired
-    private String uploadedImageDirectory;
+    private ImageService imageService;
 
     @GetMapping("/{directory}/{fileName}")
-    public @ResponseBody ResponseEntity<byte[]> getImage(
-            @PathVariable String directory,
-            @PathVariable String fileName
-    ) {
+    public @ResponseBody ResponseEntity<byte[]> getImage(@PathVariable String directory,
+                                                         @PathVariable String fileName) {
         try {
-            String path = uploadedImageDirectory + "/" + directory + "/" + fileName;
-            byte[] content = Files.readAllBytes(Paths.get(path));
+            byte[] content = imageService.getFileContents(directory, fileName);
             return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.IMAGE_JPEG).body(content);
         }
         catch(IOException e) {

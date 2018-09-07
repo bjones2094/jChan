@@ -1,7 +1,9 @@
 package com.bsj.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -14,21 +16,15 @@ import org.sqlite.SQLiteDataSource;
 import javax.sql.DataSource;
 
 @Configuration
+@PropertySource("classpath:/jChan.properties")
 public class ApplicationConfiguration implements WebMvcConfigurer {
-    @Bean
-    public String sqliteDatabaseLocation() {
-        return "C:/Users/jisabj5/Desktop/jChan.db";
-    }
-
-    @Bean
-    public String uploadedImageDirectory() {
-        return "C:/Users/jisabj5/Desktop/jChan";
-    }
+    @Value("${sqlite.db.path}")
+    private String sqliteDatabaseLocation;
 
     @Bean
     public DataSource sqliteDataSource() {
         SQLiteDataSource ds = new SQLiteDataSource();
-        ds.setUrl("jdbc:sqlite:" + sqliteDatabaseLocation());
+        ds.setUrl("jdbc:sqlite:" + sqliteDatabaseLocation);
         ds.setDatabaseName("jChan");
         return ds;
     }

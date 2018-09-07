@@ -1,0 +1,13 @@
+<configuration>
+    <timestamp key="bySecond" datePattern="yyyyMMdd'T'HHmmss"/>
+    <appender name="LOGFILE" class="ch.qos.logback.core.FileAppender">
+        <file>jChan-${bySecond}.log</file>
+        <encoder>
+            <pattern>%d{HH:mm:ss} [%-5level] %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="LOGFILE" />
+    </root>
+</configuration>

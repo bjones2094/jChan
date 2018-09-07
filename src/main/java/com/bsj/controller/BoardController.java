@@ -1,6 +1,7 @@
 package com.bsj.controller;
 
 import com.bsj.service.BoardService;
+import com.bsj.service.ImageService;
 import com.bsj.service.ReplyService;
 import com.bsj.service.ThreadService;
 import com.bsj.util.ValidationUtil;
@@ -28,10 +29,13 @@ public class BoardController {
     private BoardService boardService;
 
     @Autowired
+    private ThreadService threadService;
+
+    @Autowired
     private ReplyService replyService;
 
     @Autowired
-    private ThreadService threadService;
+    private ImageService imageService;
 
     @GetMapping("/")
     public String root(Model model) {
@@ -51,23 +55,6 @@ public class BoardController {
         return "board";
     }
 
-    @PostMapping("/{boardName}/submit")
-    public String submitThread(Model model,
-                               @PathVariable String boardName,
-                               @RequestParam("threadName") String threadName,
-                               @RequestParam("replyContent") String replyContent,
-                               @RequestParam("boardID") Integer boardID,
-                               @RequestParam(value = "imageUpload", required = false) MultipartFile imageUpload) {
-        String errorMessage = ValidationUtil.validateReplySubmission(replyContent, imageUpload);
-        if(StringUtils.isBlank(errorMessage)) {
-            threadService.createThread(boardID, threadName, replyContent, imageUpload);
-        }
-        else {
-            model.addAttribute("submitError", errorMessage);
-        }
-        return board(model, boardName);
-    }
-
     @GetMapping("/{boardName}/thread/{threadID}")
     public String thread(Model model,
                          @PathVariable String boardName,
@@ -85,6 +72,29 @@ public class BoardController {
         return "thread";
     }
 
+    @PostMapping("/{boardName}/submit")
+    public String submitThread(Model model,
+                               @PathVariable String boardName,
+                               @RequestParam("threadName") String threadName,
+                               @RequestParam("replyContent") String replyContent,
+                               @RequestParam("boardID") Integer boardID,
+                               @RequestParam(value = "imageUpload", required = false) MultipartFile imageUpload) {
+        String errorMessage = ValidationUtil.validateReplySubmission(replyContent, imageUpload);
+        if(StringUtils.isBlank(errorMessage)) {
+            int threadID = threadService.createThread(boardID, threadName);
+            int replyID = replyService.createReply(threadID, replyContent);
+            if(imageUpload != null && !imageUpload.isEmpty()) {
+                String imagePath = imageService.saveImage(threadID, replyID, boardID, imageUpload);
+                replyService.associateImageToReply(replyID, imagePath);
+            }
+            return thread(model, boardName, threadID);
+        }
+        else {
+            model.addAttribute("submitError", errorMessage);
+            return board(model, boardName);
+        }
+    }
+
     @PostMapping("/{boardName}/thread/{threadID}/submit")
     public String submitReply(Model model,
                               @PathVariable String boardName,
@@ -94,7 +104,11 @@ public class BoardController {
                               @RequestParam(value = "imageUpload", required = false) MultipartFile imageUpload) {
         String errorMessage = ValidationUtil.validateReplySubmission(replyContent, imageUpload);
         if(StringUtils.isBlank(errorMessage)) {
-            replyService.createReply(threadID, replyContent, boardID, imageUpload);
+            int replyID = replyService.createReply(threadID, replyContent);
+            if(imageUpload != null && !imageUpload.isEmpty()) {
+                String imagePath = imageService.saveImage(threadID, replyID, boardID, imageUpload);
+                replyService.associateImageToReply(replyID, imagePath);
+            }
         }
         else {
             model.addAttribute("submitError", errorMessage);

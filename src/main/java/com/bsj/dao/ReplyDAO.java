@@ -60,8 +60,8 @@ public class ReplyDAO extends DAOBase {
         return nextReplyID;
     }
 
-    public void associateFileToReply(int replyID, String filePath) {
-        getSqliteTemplate().update("UPDATE replies SET image_path = ? WHERE id = ?", filePath, replyID);
+    public void associateImageToReply(int replyID, String imagePath) {
+        getSqliteTemplate().update("UPDATE replies SET image_path = ? WHERE id = ?", imagePath, replyID);
     }
 
     public void deleteReplies(int threadID) {
