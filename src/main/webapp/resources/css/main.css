@@ -13,7 +13,7 @@
 }
 
 .bannerLink:link, .bannerLink:visited {
-    color: black;
+    color: var(--trim-color);
 }
 
 .bannerLink:hover {
