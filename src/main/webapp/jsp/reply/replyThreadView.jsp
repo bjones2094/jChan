@@ -12,7 +12,7 @@
             <c:if test="${not empty reply.imagePath}">
                 <td>
                     <a target = "_blank" href = "${contextPath}/images/${board.directory}/${reply.imagePath}">
-                        <img src = "${contextPath}/images/${board.directory}/${reply.imagePath}" style = "width: 125px" />
+                        <img src = "${contextPath}/images/${board.directory}/${reply.imagePath}" style = "width: 125px; border: solid 1px var(--trim-color)" />
                     </a>
                 </td>
             </c:if>

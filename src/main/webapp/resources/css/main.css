@@ -4,8 +4,11 @@
     font-size: 50px;
 }
 
-.bannerLink {
+.bannerText {
     font-size: 18px;
+}
+
+.bannerLink {
     text-decoration: none;
 }
 
@@ -24,6 +27,7 @@
 
 .replyList {
     width: 500px;
+    margin-top: 50px;
 }
 
 .threadLink {
@@ -45,6 +49,13 @@
 .submitForm {
     position: relative;
     width: 600px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.loginForm {
+    position: relative;
+    width: 250px;
     left: 50%;
     transform: translateX(-50%);
 }
@@ -98,4 +109,12 @@ hr {
     margin-top: 3px;
     margin-left: 3px;
     margin-bottom: 3px
+}
+
+.homeImageDiv {
+    margin-top: 50px;
+    width: 40%;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
 }

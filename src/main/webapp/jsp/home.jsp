@@ -13,5 +13,8 @@
         <div class="header">
             jChan
         </div>
+        <div class = "homeImageDiv">
+            <img src = "${contextPath}/images/${mainImage}" style = "border: solid; width: 100%" />
+        </div>
     </body>
 </html>

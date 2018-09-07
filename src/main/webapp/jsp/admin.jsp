@@ -11,32 +11,33 @@
         <%@include file="banner.jsp"%>
         <br />
         <div class="header">
-            Admin - jChan
+            Admin Login
         </div>
         <br />
 
-        <div class = submitForm>
+        <div class = loginForm>
             <c:choose>
                 <c:when test="${not sessionScope.admin}">
                     <form action = "${contextPath}/admin/login" method = "post">
-                        <table style = "width: 100%">
+                        <table style = "width: 100%;">
                             <tr>
-                                <td class = "submitFormTitle">
-                                    Sign In:
+                                <td>
+                                    Username: &nbsp;
                                 </td>
-                            </tr>
-                            <tr>
-                                <td style = "width: 100%">
+                                <td>
                                     <input type = "text" name = "username" style = "width: 100%" placeholder="Username" size="16" />
                                 </td>
                             </tr>
-                            <tr >
-                                <td style = "width: 100%">
+                            <tr>
+                                <td>
+                                    Password: &nbsp;
+                                </td>
+                                <td>
                                     <input type = "password" name = "password" style = "width: 100%" placeholder="Password" size="16" />
                                 </td>
                             </tr>
                             <tr>
-                                <td style = "text-align: right">
+                                <td style = "text-align: right" colspan = "2">
                                     <input type = "submit" value = "Submit" />
                                 </td>
                             </tr>

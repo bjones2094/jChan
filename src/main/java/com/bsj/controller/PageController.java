@@ -11,6 +11,7 @@ import com.bsj.vo.ReplyVO;
 import com.bsj.vo.ThreadVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,6 +31,9 @@ import java.util.Map;
 @Scope("session")
 @RequestMapping("/")
 public class PageController {
+    @Value("${home.image}")
+    private String homeImageName;
+
     @Autowired
     private BoardService boardService;
 
@@ -49,6 +53,7 @@ public class PageController {
     public String root(Model model,
                        HttpServletRequest request) {
         loadBoardNames(model);
+        model.addAttribute("mainImage", homeImageName);
         return "home";
     }
 

@@ -30,4 +30,15 @@ public class ImageController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
+
+    @GetMapping("/{fileName}")
+    public @ResponseBody ResponseEntity<byte[]> getImage(@PathVariable String fileName) {
+        try {
+            byte[] content = imageService.getFileContents("", fileName);
+            return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.IMAGE_JPEG).body(content);
+        }
+        catch(IOException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
 }

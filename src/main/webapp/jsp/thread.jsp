@@ -56,6 +56,8 @@
             <br />
         </c:if>
 
+        <br />
+
         <div class = "replyList">
             <div class="threadTitle">
                 ${thread.title}

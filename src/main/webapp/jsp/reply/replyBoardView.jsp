@@ -12,7 +12,7 @@
             <c:if test="${not empty reply.imagePath}">
                 <td>
                     <a target = "_blank" href = "${contextPath}/images/${board.directory}/${reply.imagePath}">
-                        <img src = "${contextPath}/images/${board.directory}/${reply.imagePath}" style = "width: 125px" />
+                        <img src = "${contextPath}/images/${board.directory}/${reply.imagePath}" style = "width: 125px; border: solid 1px var(--trim-color)" />
                     </a>
                 </td>
             </c:if>
@@ -34,7 +34,7 @@
                 </td>
             </c:if>
             <td style = "text-align: right">
-                <form action = "${threadLink}" style = "margin-bottom: 3px">
+                <form action = "${threadLink}" style = "margin-bottom: 2px">
                     <input type = "submit" value = "View Thread" style = "margin-top: 3px; margin-right: 3px"/>
                 </form>
             </td>
