@@ -72,12 +72,9 @@
                 <a class="threadLink" href = "${threadLink}">
                    ${thread.key.title}
                 </a>
-
                 <br />
-
                 <c:set var = "reply" value = "${thread.value}" />
                 <%@include file = "reply/replyBoardView.jsp"%>
-
                 <br />
             </c:forEach>
             </ul>

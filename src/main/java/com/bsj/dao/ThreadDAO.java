@@ -37,6 +37,10 @@ public class ThreadDAO extends DAOBase {
         return getSqliteTemplate().queryForObject("SELECT MIN(id) FROM threads WHERE board = ?", Integer.class, boardID);
     }
 
+    public List<String> getImageNames(int threadID) {
+        return getSqliteTemplate().queryForList("SELECT image_path FROM replies WHERE thread = ?", String.class, threadID);
+    }
+
     public int createThread(int boardID, String threadName) throws SQLException {
         Date now = Calendar.getInstance().getTime();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");

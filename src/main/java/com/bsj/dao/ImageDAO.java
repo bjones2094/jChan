@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -32,7 +33,13 @@ public class ImageDAO {
 
         FileOutputStream os = new FileOutputStream(totalName);
         os.write(imageUpload.getBytes());
+        os.close();
 
         return fileName;
+    }
+
+    public void deleteImage(String directory, String fileName) {
+        File file = new File(uploadedImageDirectory + "/" + directory + "/" + fileName);
+        file.delete();
     }
 }

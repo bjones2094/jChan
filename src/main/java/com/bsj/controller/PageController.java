@@ -163,10 +163,11 @@ public class PageController {
     public String deleteThread(Model model,
                                HttpServletRequest request,
                                @PathVariable String boardName,
-                               @PathVariable Integer threadID) {
+                               @PathVariable Integer threadID,
+                               @RequestParam("boardID") Integer boardID) {
         Boolean isAdmin = (Boolean) request.getSession().getAttribute("admin");
         if(isAdmin != null && isAdmin) {
-            threadService.deleteThread(threadID);
+            threadService.deleteThread(threadID, boardID);
             model.addAttribute("displayMessage", "Thread " + threadID + " deleted.");
         }
         else {
