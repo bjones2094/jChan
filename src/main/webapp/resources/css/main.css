@@ -105,16 +105,36 @@ hr {
     border: solid 0.5px var(--trim-color);
 }
 
-.deleteThreadButton {
-    margin-top: 3px;
-    margin-left: 3px;
-    margin-bottom: 3px
-}
-
 .homeImageDiv {
     margin-top: 50px;
     width: 40%;
     position: relative;
     left: 50%;
     transform: translateX(-50%);
+}
+
+.replyFooterButton {
+    color: var(--trim-color);
+    background-color: var(--background-color);
+    border: 1px solid var(--trim-color);
+}
+
+.replyFooterButton:hover {
+    cursor: hand;
+    background-color: var(--main-color);
+}
+
+.replyFooterButton:focus {
+    outline: 0;
+}
+
+.viewThreadButton {
+    margin-top: 3px;
+    margin-right: 3px
+}
+
+.deleteThreadButton {
+    margin-top: 3px;
+    margin-left: 3px;
+    margin-bottom: 3px
 }

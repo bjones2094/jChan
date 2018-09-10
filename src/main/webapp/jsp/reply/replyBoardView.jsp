@@ -27,7 +27,7 @@
         <tr>
             <c:if test = "${sessionScope.admin}">
                 <td style = "text-align: left">
-                    <input type = "button" value = "Delete Thread" class = "deleteThreadButton" onclick="confirmThreadDelete()"/>
+                    <input type = "button" value = "Delete Thread" class = "replyFooterButton deleteThreadButton" onclick="confirmThreadDelete()"/>
                     <form id = "deleteThreadSubmit" hidden = "true" action = "${threadLink}/delete" method = "post">
                         <input type = "hidden" name = "boardID" value = "${board.id}" />
                     </form>
@@ -35,7 +35,7 @@
             </c:if>
             <td style = "text-align: right">
                 <form action = "${threadLink}" style = "margin-bottom: 2px">
-                    <input type = "submit" value = "View Thread" style = "margin-top: 3px; margin-right: 3px"/>
+                    <input type = "submit" value = "View Thread" class=" replyFooterButton viewThreadButton"/>
                 </form>
             </td>
         </tr>
