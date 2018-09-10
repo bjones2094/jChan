@@ -37,7 +37,7 @@ public class ThreadService {
 
     public Map<ThreadVO, ReplyVO> getThreadsWithFirstReply(int boardID) {
         Map<ThreadVO, ReplyVO> threadsWithReplies = new LinkedHashMap();
-        for(ThreadVO thread : threadDAO.getThreads(boardID)) {
+        for(ThreadVO thread : threadDAO.getThreadsOrderByStaleness(boardID)) {
             ReplyVO firstReply = replyDAO.getFirstReply(thread.getId());
             if(firstReply != null) {
                 threadsWithReplies.put(thread, firstReply);
@@ -71,7 +71,7 @@ public class ThreadService {
     }
 
     public void deleteOldestThread(int boardID) {
-        int oldestThreadID = threadDAO.getOldestThreadID(boardID);
+        int oldestThreadID = threadDAO.getStalestThreadID(boardID);
         threadDAO.deleteThread(oldestThreadID);
         replyDAO.deleteReplies(oldestThreadID);
     }

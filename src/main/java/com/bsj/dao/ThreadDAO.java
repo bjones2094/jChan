@@ -24,6 +24,22 @@ public class ThreadDAO extends DAOBase {
                 .collect(Collectors.toList());
     }
 
+    public List<ThreadVO> getThreadsOrderByStaleness(int boardID) {
+        return getSqliteTemplate().queryForList(
+                "SELECT th.*              \n" +
+                "FROM threads th          \n" +
+                "INNER JOIN replies rp    \n" +
+                "ON rp.thread = th.id     \n" +
+                "WHERE th.board = ?       \n" +
+                "GROUP BY th.id           \n" +
+                "ORDER BY MAX(rp.id) DESC   ",
+                boardID
+        )
+                .stream()
+                .map(ThreadDAO::buildThreadVO)
+                .collect(Collectors.toList());
+    }
+
     public ThreadVO getThread(int threadID) {
         Map<String, Object> result = getSqliteTemplate().queryForMap("SELECT * FROM threads WHERE id = ?", threadID);
         return buildThreadVO(result);
@@ -35,6 +51,21 @@ public class ThreadDAO extends DAOBase {
 
     public int getOldestThreadID(int boardID) {
         return getSqliteTemplate().queryForObject("SELECT MIN(id) FROM threads WHERE board = ?", Integer.class, boardID);
+    }
+
+    public int getStalestThreadID(int boardID) {
+        return getSqliteTemplate().queryForObject(
+                "SELECT th.id            \n" +
+                "FROM threads th         \n" +
+                "INNER JOIN replies rp   \n" +
+                "ON rp.thread = th.id    \n" +
+                "WHERE th.board = ?      \n" +
+                "GROUP BY th.id          \n" +
+                "ORDER BY MAX(rp.id) ASC \n" +
+                "LIMIT 1;                  ",
+                Integer.class,
+                boardID
+        );
     }
 
     public List<String> getImageNames(int threadID) {
