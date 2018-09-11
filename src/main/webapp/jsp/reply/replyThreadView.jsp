@@ -23,5 +23,42 @@
     </table>
 </div>
 <div class="replyFooter">
-    &nbsp;
+    <table style = "width: 100%">
+        <tr>
+            <c:choose>
+                <c:when test = "${(sessionScope.admin) and (loop.index ne 0)}">
+                    <td style = "text-align: left">
+                        <input type = "button" value = "Delete Reply" class = "replyFooterButton deleteThreadButton" onclick="confirmReplyDelete()"/>
+                        <form id = "deleteReplySubmit" hidden = "true" action = "${threadLink}/${reply.id}/delete" method = "post">
+                            <input type = "hidden" name = "boardID" value = "${board.id}" />
+                        </form>
+                    </td>
+                </c:when>
+                <c:when test = "${(sessionScope.admin) and (loop.index eq 0)}">
+                    <td style = "text-align: left">
+                        <input type = "button" value = "Delete Thread" class = "replyFooterButton deleteThreadButton" onclick="confirmThreadDelete()"/>
+                        <form id = "deleteThreadSubmit" hidden = "true" action = "${threadLink}/delete" method = "post">
+                            <input type = "hidden" name = "boardID" value = "${board.id}" />
+                        </form>
+                    </td>
+                </c:when>
+                <c:otherwise>
+                    &nbsp;
+                </c:otherwise>
+            </c:choose>
+        </tr>
+    </table>
 </div>
+
+<script type="application/javascript">
+    function confirmReplyDelete() {
+        if(confirm("Are you sure you want to delete this reply?")) {
+            document.getElementById('deleteReplySubmit').submit();
+        }
+    }
+    function confirmThreadDelete() {
+        if(confirm("Are you sure you want to delete this thread?")) {
+            document.getElementById('deleteThreadSubmit').submit();
+        }
+    }
+</script>

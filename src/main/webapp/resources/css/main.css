@@ -138,3 +138,18 @@ hr {
     margin-left: 3px;
     margin-bottom: 3px
 }
+
+.threadButtonsForm {
+    position: relative;
+    width: 600px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+}
+
+.threadButtons {
+    border: solid 2px;
+    width: 80px;
+    height: 30px;
+    font-size: 18px;
+}

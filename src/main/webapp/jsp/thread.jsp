@@ -21,7 +21,11 @@
             /${board.name}/ - ${board.description}
         </div>
 
-        <br />
+        <br /><br />
+
+        <form action = "${contextPath}/${board.name}" class="threadButtonsForm">
+            <input type = "submit" value = "Return" class = "replyFooterButton threadButtons">
+        </form>
 
         <div class = "submitForm">
             <form action = "${contextPath}/${board.name}/thread/${thread.id}/submit/" method = "post" autocomplete="off" enctype = "multipart/form-data">
@@ -56,14 +60,13 @@
             <br />
         </c:if>
 
-        <br />
-
         <div class = "replyList">
             <div class="threadTitle">
                 ${thread.title}
             </div>
 
-            <c:forEach items = "${replies}" var = "reply">
+            <c:set var = "threadLink" value = "${contextPath}/${board.name}/thread/${thread.id}" />
+            <c:forEach items = "${replies}" var = "reply" varStatus = "loop">
                 <%@include file = "reply/replyThreadView.jsp" %>
                 <br />
             </c:forEach>

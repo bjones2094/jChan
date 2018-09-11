@@ -62,14 +62,10 @@ public class ThreadController {
                                     @PathVariable Integer threadID,
                                     @RequestParam("replyContent") String replyContent,
                                     @RequestParam("boardID") Integer boardID,
-                                    @RequestParam(value = "imageUpload", required = false) MultipartFile imageUpload) {
+                                    @RequestParam(value = "imageUpload", required = false) MultipartFile imageUpload) throws Exception {
         String errorMessage = ValidationUtil.validateReplySubmission(replyContent, imageUpload);
         if(StringUtils.isBlank(errorMessage)) {
-            int replyID = replyService.createReply(threadID, replyContent);
-            if(imageUpload != null && !imageUpload.isEmpty()) {
-                String imagePath = imageService.saveImage(threadID, replyID, boardID, imageUpload);
-                replyService.associateImageToReply(replyID, imagePath);
-            }
+            replyService.createReply(boardID, threadID, replyContent, imageUpload);
         }
         else {
             redirectAttributes.addFlashAttribute("submitError", errorMessage);
@@ -87,12 +83,31 @@ public class ThreadController {
         Boolean isAdmin = (Boolean) request.getSession().getAttribute("admin");
         if(isAdmin != null && isAdmin) {
             threadService.deleteThread(threadID, boardID);
-            redirectAttributes.addAttribute("displayMessage", "Thread " + threadID + " deleted.");
+            redirectAttributes.addFlashAttribute("displayMessage", "Thread " + threadID + " deleted.");
         }
         else {
             redirectAttributes.addFlashAttribute("submitError", "You must be logged in as an admin to delete a thread.");
         }
         RedirectView redirectView = new RedirectView(request.getContextPath() + "/" + boardName);
+        return new ModelAndView(redirectView);
+    }
+
+    @PostMapping("/{boardName}/thread/{threadID}/{replyID}/delete")
+    public ModelAndView deleteThread(HttpServletRequest request,
+                                     RedirectAttributes redirectAttributes,
+                                     @PathVariable String boardName,
+                                     @PathVariable Integer threadID,
+                                     @PathVariable Integer replyID,
+                                     @RequestParam("boardID") Integer boardID) {
+        Boolean isAdmin = (Boolean) request.getSession().getAttribute("admin");
+        if(isAdmin != null && isAdmin) {
+            replyService.deleteReply(boardID, replyID);
+            redirectAttributes.addFlashAttribute("displayMessage", "Reply " + replyID + " deleted.");
+        }
+        else {
+            redirectAttributes.addFlashAttribute("submitError", "You must be logged in as an admin to delete a reply.");
+        }
+        RedirectView redirectView = new RedirectView(request.getContextPath() + "/" + boardName + "/thread/" + threadID);
         return new ModelAndView(redirectView);
     }
 }

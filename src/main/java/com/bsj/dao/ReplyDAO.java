@@ -35,6 +35,10 @@ public class ReplyDAO extends DAOBase {
         }
     }
 
+    public String getImageName(int replyID) {
+        return getSqliteTemplate().queryForObject("SELECT image_path FROM replies WHERE id = ?", String.class, replyID);
+    }
+
     /*
      * We manually use Connection objects with auto-commit disabled
      * to ensure that last_insert_rowid is executed on the same connection that
@@ -68,6 +72,10 @@ public class ReplyDAO extends DAOBase {
 
     public void associateImageToReply(int replyID, String imagePath) {
         getSqliteTemplate().update("UPDATE replies SET image_path = ? WHERE id = ?", imagePath, replyID);
+    }
+
+    public void deleteReply(int replyID) {
+        getSqliteTemplate().update("DELETE FROM replies WHERE id = ?", replyID);
     }
 
     public void deleteReplies(int threadID) {

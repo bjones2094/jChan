@@ -2,14 +2,12 @@ package com.bsj.service;
 
 import com.bsj.dao.BoardDAO;
 import com.bsj.dao.ImageDAO;
-import com.bsj.dao.ReplyDAO;
 import com.bsj.dao.ThreadDAO;
 import com.bsj.vo.ReplyVO;
 import com.bsj.vo.ThreadVO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -17,8 +15,6 @@ import java.util.Map;
 
 @Component
 public class ThreadService {
-    private static final Logger log = LoggerFactory.getLogger(ThreadService.class);
-
     @Autowired
     private BoardDAO boardDAO;
 
@@ -26,7 +22,7 @@ public class ThreadService {
     private ThreadDAO threadDAO;
 
     @Autowired
-    private ReplyDAO replyDAO;
+    private ReplyService replyService;
 
     @Autowired
     private ImageDAO imageDAO;
@@ -38,7 +34,7 @@ public class ThreadService {
     public Map<ThreadVO, ReplyVO> getThreadsWithFirstReply(int boardID) {
         Map<ThreadVO, ReplyVO> threadsWithReplies = new LinkedHashMap();
         for(ThreadVO thread : threadDAO.getThreadsOrderByStaleness(boardID)) {
-            ReplyVO firstReply = replyDAO.getFirstReply(thread.getId());
+            ReplyVO firstReply = replyService.getFirstReply(thread.getId());
             if(firstReply != null) {
                 threadsWithReplies.put(thread, firstReply);
             }
@@ -46,24 +42,19 @@ public class ThreadService {
         return threadsWithReplies;
     }
 
-    public int createThread(int boardID, String threadName) {
-        try {
-            int threadID = threadDAO.createThread(boardID, threadName);
-            if(threadDAO.getThreadCount(boardID) > 10) {
-                deleteOldestThread(boardID);
-            }
-            return threadID;
+    public int createThread(int boardID, String threadName, String replyContent, MultipartFile imageUpload) throws Exception {
+        int threadID = threadDAO.createThread(boardID, threadName);
+        replyService.createReply(boardID, threadID, replyContent, imageUpload);
+        if(threadDAO.getThreadCount(boardID) > 10) {
+            deleteOldestThread(boardID);
         }
-        catch(Exception e) {
-            log.error(e.getMessage(), e);
-            return -1;
-        }
+        return threadID;
     }
 
     public void deleteThread(int threadID, int boardID) {
         List<String> fileNames = threadDAO.getImageNames(threadID);
         threadDAO.deleteThread(threadID);
-        replyDAO.deleteReplies(threadID);
+        replyService.deleteReplies(threadID);
         String directory = boardDAO.getDirectory(boardID);
         for(String fileName : fileNames) {
             imageDAO.deleteImage(directory, fileName);
@@ -72,7 +63,6 @@ public class ThreadService {
 
     public void deleteOldestThread(int boardID) {
         int oldestThreadID = threadDAO.getStalestThreadID(boardID);
-        threadDAO.deleteThread(oldestThreadID);
-        replyDAO.deleteReplies(oldestThreadID);
+        deleteThread(boardID, oldestThreadID);
     }
 }

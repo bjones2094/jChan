@@ -1,8 +1,6 @@
 package com.bsj.controller;
 
 import com.bsj.service.BoardService;
-import com.bsj.service.ImageService;
-import com.bsj.service.ReplyService;
 import com.bsj.service.ThreadService;
 import com.bsj.util.ValidationUtil;
 import com.bsj.vo.BoardVO;
@@ -34,12 +32,6 @@ public class BoardController {
     @Autowired
     private ThreadService threadService;
 
-    @Autowired
-    private ReplyService replyService;
-
-    @Autowired
-    private ImageService imageService;
-
     @GetMapping("/{boardName}")
     public String board(Model model,
                         @PathVariable String boardName) {
@@ -59,16 +51,11 @@ public class BoardController {
                                      @RequestParam("threadName") String threadName,
                                      @RequestParam("replyContent") String replyContent,
                                      @RequestParam("boardID") Integer boardID,
-                                     @RequestParam(value = "imageUpload", required = false) MultipartFile imageUpload) {
+                                     @RequestParam(value = "imageUpload", required = false) MultipartFile imageUpload) throws Exception {
         RedirectView redirectView;
         String errorMessage = ValidationUtil.validateReplySubmission(replyContent, imageUpload);
         if(StringUtils.isBlank(errorMessage)) {
-            int threadID = threadService.createThread(boardID, threadName);
-            int replyID = replyService.createReply(threadID, replyContent);
-            if(imageUpload != null && !imageUpload.isEmpty()) {
-                String imagePath = imageService.saveImage(threadID, replyID, boardID, imageUpload);
-                replyService.associateImageToReply(replyID, imagePath);
-            }
+            int threadID = threadService.createThread(boardID, threadName, replyContent, imageUpload);
             redirectView = new RedirectView(request.getContextPath() + "/" + boardName + "/thread/" + threadID);
         }
         else {
