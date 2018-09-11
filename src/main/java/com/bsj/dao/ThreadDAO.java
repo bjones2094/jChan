@@ -72,6 +72,12 @@ public class ThreadDAO extends DAOBase {
         return getSqliteTemplate().queryForList("SELECT image_path FROM replies WHERE thread = ?", String.class, threadID);
     }
 
+    /*
+     * We manually use Connection objects with auto-commit disabled
+     * to ensure that last_insert_rowid is executed on the same connection that
+     * was used to insert the thread into the table. This ensures that the ID
+     * that is returned is the same one that we created.
+     */
     public int createThread(int boardID, String threadName) throws SQLException {
         Date now = Calendar.getInstance().getTime();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");

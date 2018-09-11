@@ -35,6 +35,12 @@ public class ReplyDAO extends DAOBase {
         }
     }
 
+    /*
+     * We manually use Connection objects with auto-commit disabled
+     * to ensure that last_insert_rowid is executed on the same connection that
+     * was used to insert the reply into the table. This ensures that the ID
+     * that is returned is the same one that we created.
+     */
     public int createReply(int threadID, String content) throws SQLException {
         Date now = Calendar.getInstance().getTime();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");

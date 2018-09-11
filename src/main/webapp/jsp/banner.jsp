@@ -19,7 +19,7 @@
             <td style = "text-align: center; width: 33%">
                 <a class = "bannerLink" href="${contextPath}">Home</a>
             </td>
-            <td style = "text-align: right">
+            <td style = "text-align: right; width: 33%">
                 <a class = "bannerLink" href="${contextPath}/admin">
                     <c:choose>
                         <c:when test = "${sessionScope.admin}">
