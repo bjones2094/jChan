@@ -1,3 +1,5 @@
+<script src = "<c:url value="/resources/js/main.js" />"></script>
+
 <div class="replyHeader">
     <table style = "width: 100%">
         <tr>
@@ -27,7 +29,7 @@
         <tr>
             <c:if test = "${sessionScope.admin}">
                 <td style = "text-align: left">
-                    <input type = "button" value = "Delete Thread" class = "replyFooterButton deleteThreadButton" onclick="confirmThreadDelete()"/>
+                    <input type = "button" value = "Delete Thread" class = "replyFooterButton deleteThreadButton" onclick="confirmDelete('deleteThreadSubmit', 'thread')"/>
                     <form id = "deleteThreadSubmit" hidden = "true" action = "${threadLink}/delete" method = "post">
                         <input type = "hidden" name = "boardID" value = "${board.id}" />
                     </form>
@@ -41,11 +43,3 @@
         </tr>
     </table>
 </div>
-
-<script type="application/javascript">
-    function confirmThreadDelete() {
-        if(confirm("Are you sure you want to delete this thread?")) {
-            document.getElementById('deleteThreadSubmit').submit();
-        }
-    }
-</script>
