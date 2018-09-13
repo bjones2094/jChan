@@ -1,9 +1,9 @@
 package com.bsj.controller;
 
 import com.bsj.service.BoardService;
-import com.bsj.service.ImageService;
 import com.bsj.service.ReplyService;
 import com.bsj.service.ThreadService;
+import com.bsj.util.AuthorizationUtil;
 import com.bsj.util.ValidationUtil;
 import com.bsj.vo.BoardVO;
 import com.bsj.vo.ReplyVO;
@@ -37,9 +37,6 @@ public class ThreadController {
     @Autowired
     private ReplyService replyService;
 
-    @Autowired
-    private ImageService imageService;
-
     @GetMapping("/{boardName}/thread/{threadID}")
     public String thread(Model model,
                          @PathVariable String boardName,
@@ -65,7 +62,8 @@ public class ThreadController {
                                     @RequestParam(value = "imageUpload", required = false) MultipartFile imageUpload) throws Exception {
         String errorMessage = ValidationUtil.validateReplySubmission(replyContent, imageUpload);
         if(StringUtils.isBlank(errorMessage)) {
-            replyService.createReply(boardID, threadID, replyContent, imageUpload);
+            String username = (String) request.getSession().getAttribute(AuthorizationUtil.USERNAME_ATTRIBUTE);
+            replyService.createReply(boardID, threadID, replyContent, imageUpload, username);
         }
         else {
             redirectAttributes.addFlashAttribute("submitError", errorMessage);
@@ -80,8 +78,7 @@ public class ThreadController {
                                      @PathVariable String boardName,
                                      @PathVariable Integer threadID,
                                      @RequestParam("boardID") Integer boardID) {
-        Boolean isAdmin = (Boolean) request.getSession().getAttribute("admin");
-        if(isAdmin != null && isAdmin) {
+        if(AuthorizationUtil.isAuthorized(request)) {
             threadService.deleteThread(threadID, boardID);
             redirectAttributes.addFlashAttribute("displayMessage", "Thread " + threadID + " deleted.");
         }
@@ -99,8 +96,7 @@ public class ThreadController {
                                      @PathVariable Integer threadID,
                                      @PathVariable Integer replyID,
                                      @RequestParam("boardID") Integer boardID) {
-        Boolean isAdmin = (Boolean) request.getSession().getAttribute("admin");
-        if(isAdmin != null && isAdmin) {
+        if(AuthorizationUtil.isAuthorized(request)) {
             replyService.deleteReply(boardID, replyID);
             redirectAttributes.addFlashAttribute("displayMessage", "Reply " + replyID + " deleted.");
         }

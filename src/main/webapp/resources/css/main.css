@@ -17,6 +17,7 @@
 }
 
 .bannerLink:hover {
+    cursor: hand;
     color: red;
 }
 
@@ -38,12 +39,6 @@
 
 .threadLink:hover {
     color: red;
-}
-
-.threadTitle {
-    color: var(--trim-color);
-    font-size: 20px;
-    width: 100%;
 }
 
 .submitForm {
@@ -139,17 +134,15 @@ hr {
     margin-bottom: 3px
 }
 
-.threadButtonsForm {
+.actionButtonsTable {
     position: relative;
-    width: 600px;
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
 }
 
-.threadButtons {
+.actionButton {
     border: solid 2px;
-    width: 80px;
     height: 30px;
     font-size: 18px;
 }

@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <link rel="stylesheet" href = "<c:url value="/resources/css/main.css" />" />
+<script src = "<c:url value="/resources/js/main.js" />"></script>
 <c:set var = "contextPath" value="<%=request.getContextPath()%>" />
 <c:choose>
     <c:when test="${board.nsfw}">
@@ -21,15 +22,27 @@
         <div class="header">
             /${board.name}/ - ${board.description}
         </div>
-        <br />
-        <div class = "submitForm">
+
+        <br /><br />
+
+        <table class="actionButtonsTable" cellspacing="5">
+            <tr>
+                <td>
+                    <form action = "javascript:unhideElement('submitFormDiv')">
+                        <input type = "submit" value = "Start a thread" class = "replyFooterButton actionButton">
+                    </form>
+                </td>
+                <td>
+                    <form action = "${contextPath}/${board.name}/catalog">
+                        <input type = "submit" value = "Catalog" class = "replyFooterButton actionButton">
+                    </form>
+                </td>
+            </tr>
+        </table>
+
+        <div id = "submitFormDiv" class = "submitForm" hidden = "true">
             <form action = "${contextPath}/${board.name}/submit/" method = "post" autocomplete="off" enctype="multipart/form-data">
                 <table style = "width: 100%">
-                    <tr>
-                        <td class = "submitFormTitle" colspan = "2">
-                            Create a thread:
-                        </td>
-                    </tr>
                     <tr>
                         <td style = "width: 100%" colspan = "2">
                             <input type = "text" name = "threadName" style = "width: 100%" placeholder="Title" size="16" />
@@ -69,10 +82,6 @@
         <div class = "replyList">
             <c:forEach items = "${threads}" var = "thread">
                 <c:set var = "threadLink" value = "${contextPath}/${board.name}/thread/${thread.key.id}" />
-                <a class="threadLink" href = "${threadLink}">
-                   ${thread.key.title}
-                </a>
-                <br />
                 <c:set var = "reply" value = "${thread.value}" />
                 <%@include file = "reply/replyBoardView.jsp"%>
                 <br />

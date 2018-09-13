@@ -6,6 +6,7 @@ public class ReplyVO {
     private String createDate;
     private Integer threadID;
     private String imagePath;
+    private String postedBy;
 
     public Integer getId() {
         return id;
@@ -27,6 +28,10 @@ public class ReplyVO {
         return imagePath;
     }
 
+    public String getPostedBy() {
+        return postedBy;
+    }
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -45,5 +50,9 @@ public class ReplyVO {
 
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
+    }
+
+    public void setPostedBy(String postedBy) {
+        this.postedBy = postedBy;
     }
 }

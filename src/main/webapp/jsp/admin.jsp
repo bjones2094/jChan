@@ -42,6 +42,7 @@
                                 </td>
                             </tr>
                         </table>
+                        <input type = "hidden" name = "sentFromURL" value = "${sentFromURL}" />
                     </form>
                 </c:when>
                 <c:otherwise>
@@ -58,6 +59,7 @@
                                 </td>
                             </tr>
                         </table>
+                        <input type = "hidden" name = "sentFromURL" value = "${sentFromURL}" />
                     </form>
                 </c:otherwise>
             </c:choose>

@@ -29,8 +29,8 @@ public class ReplyService {
         return replyDAO.getFirstReply(threadID);
     }
 
-    public int createReply(int boardID, int threadID, String content, MultipartFile imageUpload) throws Exception {
-        int replyID = replyDAO.createReply(threadID, content);
+    public int createReply(int boardID, int threadID, String content, MultipartFile imageUpload, String postedBy) throws Exception {
+        int replyID = replyDAO.createReply(threadID, content, postedBy);
         if(imageUpload != null && !imageUpload.isEmpty()) {
             String directory = boardDAO.getDirectory(boardID);
             String imagePath = imageDAO.saveImage(threadID, replyID, directory, imageUpload);

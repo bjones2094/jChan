@@ -3,3 +3,11 @@ function confirmDelete(elementID, objectType) {
         document.getElementById(elementID).submit();
     }
 }
+
+function unhideElement(elementID) {
+    document.getElementById(elementID).hidden = false;
+}
+
+function submitForm(elementID) {
+    document.getElementById(elementID).submit();
+}

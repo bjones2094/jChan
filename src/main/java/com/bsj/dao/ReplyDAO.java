@@ -45,18 +45,19 @@ public class ReplyDAO extends DAOBase {
      * was used to insert the reply into the table. This ensures that the ID
      * that is returned is the same one that we created.
      */
-    public int createReply(int threadID, String content) throws SQLException {
+    public int createReply(int threadID, String content, String postedBy) throws SQLException {
         Date now = Calendar.getInstance().getTime();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
         Connection connection = getSqliteTemplate().getDataSource().getConnection();
         connection.setAutoCommit(false);
 
-        String insertThreadQuery = "INSERT INTO replies (content, thread, create_date) VALUES(?,?,?)";
+        String insertThreadQuery = "INSERT INTO replies (content, thread, create_date, posted_by) VALUES(?,?,?,?)";
         PreparedStatement insertStatement = connection.prepareStatement(insertThreadQuery);
         insertStatement.setString(1, content);
         insertStatement.setInt(2, threadID);
         insertStatement.setString(3, dateFormat.format(now));
+        insertStatement.setString(4, postedBy);
         insertStatement.execute();
         connection.commit();
 
@@ -89,6 +90,7 @@ public class ReplyDAO extends DAOBase {
         reply.setCreateDate((String) row.get("create_date"));
         reply.setThreadID((Integer) row.get("thread"));
         reply.setImagePath((String) row.get("image_path"));
+        reply.setPostedBy((String) row.get("posted_by"));
         return reply;
     }
 }

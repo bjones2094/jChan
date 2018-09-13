@@ -2,6 +2,7 @@ package com.bsj.controller;
 
 import com.bsj.service.BoardService;
 import com.bsj.service.ThreadService;
+import com.bsj.util.AuthorizationUtil;
 import com.bsj.util.ValidationUtil;
 import com.bsj.vo.BoardVO;
 import com.bsj.vo.ReplyVO;
@@ -55,7 +56,8 @@ public class BoardController {
         RedirectView redirectView;
         String errorMessage = ValidationUtil.validateReplySubmission(replyContent, imageUpload);
         if(StringUtils.isBlank(errorMessage)) {
-            int threadID = threadService.createThread(boardID, threadName, replyContent, imageUpload);
+            String username = (String) request.getSession().getAttribute(AuthorizationUtil.USERNAME_ATTRIBUTE);
+            int threadID = threadService.createThread(boardID, threadName, replyContent, imageUpload, username);
             redirectView = new RedirectView(request.getContextPath() + "/" + boardName + "/thread/" + threadID);
         }
         else {

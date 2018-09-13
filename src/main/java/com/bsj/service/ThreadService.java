@@ -42,9 +42,9 @@ public class ThreadService {
         return threadsWithReplies;
     }
 
-    public int createThread(int boardID, String threadName, String replyContent, MultipartFile imageUpload) throws Exception {
+    public int createThread(int boardID, String threadName, String replyContent, MultipartFile imageUpload, String postedBy) throws Exception {
         int threadID = threadDAO.createThread(boardID, threadName);
-        replyService.createReply(boardID, threadID, replyContent, imageUpload);
+        replyService.createReply(boardID, threadID, replyContent, imageUpload, postedBy);
         if(threadDAO.getThreadCount(boardID) > 10) {
             deleteOldestThread(boardID);
         }

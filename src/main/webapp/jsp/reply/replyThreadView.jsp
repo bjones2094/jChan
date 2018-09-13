@@ -3,9 +3,29 @@
 <div class="replyHeader">
     <table style = "width: 100%">
         <tr>
-            <td style = "text-align: left">No. ${reply.id}</td>
-            <td style = "text-align: right">${reply.createDate}</td>
+            <c:choose>
+                <c:when test="${not empty reply.postedBy}">
+                    <td style = "text-align: left; color: red;">
+                        <b>${reply.postedBy} ## Admin</b>
+                    </td>
+                </c:when>
+                <c:otherwise>
+                    <td style = "text-align: left; color: darkgreen;">
+                        <b>Anonymous</b>
+                    </td>
+                </c:otherwise>
+            </c:choose>
+            <td style = "text-align: right">
+                ${reply.createDate} &nbsp; No. ${reply.id}
+            </td>
         </tr>
+        <c:if test = "${(not empty thread.title) and (loop.index eq 0)}">
+            <tr>
+                <td style = "text-align: left">
+                    <b>${thread.title}</b>
+                </td>
+            </tr>
+        </c:if>
     </table>
 </div>
 <div class="replyBody">
