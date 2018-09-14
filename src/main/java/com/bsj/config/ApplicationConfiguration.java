@@ -24,6 +24,9 @@ public class ApplicationConfiguration implements WebMvcConfigurer {
     @Value("${sqlite.db.path}")
     private String sqliteDatabaseLocation;
 
+    @Value("${uploaded.images.directory}")
+    private String uploadedImageDirectory;
+
     @Autowired
     private BannerContentInterceptor bannerContentInterceptor;
 
@@ -45,6 +48,7 @@ public class ApplicationConfiguration implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+        registry.addResourceHandler("/images/**").addResourceLocations("file:" + uploadedImageDirectory + "/");
     }
 
     @Override

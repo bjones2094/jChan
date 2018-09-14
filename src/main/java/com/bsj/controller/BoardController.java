@@ -45,6 +45,18 @@ public class BoardController {
         return "board";
     }
 
+    @GetMapping("/{boardName}/catalog")
+    public String boardCatalog(Model model,
+                               @PathVariable String boardName) {
+        BoardVO board = boardService.getBoard(boardName);
+        Map<ThreadVO, ReplyVO> threads = threadService.getThreadsWithFirstReply(board.getId());
+
+        model.addAttribute("board", board);
+        model.addAttribute("threads", threads);
+
+        return "boardCatalogView";
+    }
+
     @PostMapping("/{boardName}/submit")
     public ModelAndView submitThread(HttpServletRequest request,
                                      RedirectAttributes redirectAttributes,

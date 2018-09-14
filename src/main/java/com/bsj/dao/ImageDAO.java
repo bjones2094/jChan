@@ -7,17 +7,11 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 @Repository
 public class ImageDAO {
     @Value("${uploaded.images.directory}")
     private String uploadedImageDirectory;
-
-    public byte[] getFileContents(String directory, String fileName) throws IOException {
-        return Files.readAllBytes(Paths.get(uploadedImageDirectory + "/" + directory + "/" + fileName));
-    }
 
     public String saveImage(int threadID, int replyID, String directory, MultipartFile imageUpload) throws IOException {
         String fileExtension;
